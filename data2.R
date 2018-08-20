@@ -107,4 +107,64 @@ head(students)
 tail(students)
 head(students,n=7)
 students[c(1,2)]
-#
+#avg marks scpored by each gender of markks1
+#gender, marks1, name pf data frame
+aggregate(students$mark1, by=list(students$gender),FUN=mean)
+aggregate(students$mark2, by=list(students$course),FUN=max)#max marks scored in subj from each course
+aggregate(students$mark2, by=list(students$course,students$gender),FUN=max)
+#dplyr
+library(dplyr)
+students %>% group_by(gender) %>% summarise(mean(mark1))
+students %>% group_by(course,gender) %>% summarise(mean(mark1),min(mark1),max(mark1))
+ 
+students %>% group_by(course,gender) %>% summarise(meanmarks1=mean(mark1),min(mark1),max(mark1)) %>% arrange(desc(meanmarks1))
+students %>% arrange(desc(mark1)) %>% filter(gender=='male') %>%
+ top_n(5)
+
+
+#select 60 rows,1) 10% of rows-sample_frac 2) 5 rows sample_n
+
+sample_frac(students,replace = T,0.1 )
+?sample_frac
+sample_n(students, 5, replace = TRUE)
+
+students%>% sample_frac(0.1) %>% arrange(course) %>% select(name,gender)
+students%>%sample_n(5)
+
+students %>% group_by(course,gender) %>% arrange(mark1) %>% top_n(n=2)
+
+
+
+
+
+#factor why 
+names(students)
+students$gender=factor(students$gender)
+summary(students$gender)
+summary(students$course)
+students$course=factor(students$course,ordered=T,levels = c('FPM','MBA','BBA'))
+summary(students$course)
+students$grades
+
+students$grades=factor(students$grades,ordered=T,levels = c('C','B','A'))
+
+write.csv(students,'C:\Users\User\Documents\CBAP\students.csv')
+
+students3=read.csv(file.choose())
+students3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
